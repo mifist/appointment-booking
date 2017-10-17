@@ -76,8 +76,15 @@ class Frontend
         if ( get_option( 'bookly_cst_phone_default_country' ) != 'disabled' ) {
             call_user_func( $link_script, 'bookly-intlTelInput', $resources . '/js/intlTelInput.min.js', array( 'jquery' ), $version );
         }
-        call_user_func( $link_script, 'bookly',             $resources . '/js/bookly.js',            array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
-
+        
+        
+        //call_user_func( $link_script, 'bookly',             $resources . '/js/bookly.js',            array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
+	
+	    call_user_func( $link_script, 'bookly',             $resources . '/js/bookly-main.js',            array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
+        
+        
+        
+        
         // Assets for [bookly-appointments-list].
         call_user_func( $link_style,  'bookly-customer-profile', plugins_url( 'modules/customer_profile/resources/css/customer_profile.css', __FILE__ ), array(), $version );
         call_user_func( $link_script, 'bookly-customer-profile', plugins_url( 'modules/customer_profile/resources/js/customer_profile.js', __FILE__ ), array( 'jquery' ), $version );

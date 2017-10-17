@@ -10,8 +10,8 @@ $time_interval = get_option( 'bookly_gen_time_slot_length' );
 	<div class="panel-group" id="services_list" role="tablist" aria-multiselectable="true">
 		<?php foreach ( $service_collection as $service ) : ?>
 			<?php $service_id   = $service['id'];
-			$assigned_staff_ids = $service['staff_ids'] ? explode( ',', $service['staff_ids'] ) : array();
-			$all_staff_selected = count( $assigned_staff_ids ) == count( $staff_collection );
+					$assigned_staff_ids = $service['staff_ids'] ? explode( ',', $service['staff_ids'] ) : array();
+					$all_staff_selected = count( $assigned_staff_ids ) == count( $staff_collection );
 			?>
 			<div class="panel panel-default bookly-js-collapse" data-service-id="<?php echo $service_id ?>">
 				<div class="panel-heading" role="tab" id="s_<?php echo $service_id ?>">
@@ -149,12 +149,20 @@ $time_interval = get_option( 'bookly_gen_time_slot_length' );
 							</div>
 							
 							<div class="row">
+								
 								<div class="col-sm-6">
+									
 									<div class="form-group">
 										<label for="category_<?php echo $service_id ?>"><?php _e( 'Category', 'bookly' ) ?></label>
-										<select id="category_<?php echo $service_id ?>" class="form-control" name="category_id"><option value="0"><?php _e( 'Uncategorized', 'bookly' ) ?></option>
+										<select id="category_<?php echo $service_id ?>" class="form-control" name="category_id">
+											<option value="0"><?php _e( 'Uncategorized', 'bookly' ) ?></option>
 											<?php foreach ( $category_collection as $category ) : ?>
-												<option value="<?php echo $category['id'] ?>" <?php selected( $category['id'], $service['category_id'] ) ?>><?php echo esc_html( $category['name'] ) ?></option>
+												<option value="<?php echo $category['id'] ?>"
+													<?php selected( $category['id'], $service['category_id'] ) ?>>
+													<?php echo esc_html( $category['name'] ) ?>
+													
+													
+												</option>
 											<?php endforeach ?>
 										</select>
 									</div>
@@ -185,7 +193,9 @@ $time_interval = get_option( 'bookly_gen_time_slot_length' );
 													<li>
 														<a class="checkbox" href="javascript:void(0)">
 															<label>
-																<input type="checkbox" name="staff_ids[]" class="bookly-js-check-entity" value="<?php echo $staff['id'] ?>" <?php checked( in_array( $staff['id'], $assigned_staff_ids ) ) ?> data-title="<?php echo esc_attr( $staff['full_name'] ) ?>">
+																<input type="checkbox" name="staff_ids[]" class="bookly-js-check-entity" value="<?php echo $staff['id'] ?>"
+																	<?php checked( in_array( $staff['id'], $assigned_staff_ids ) ) ?>
+																	   data-title="<?php echo esc_attr( $staff['full_name'] ) ?>">
 																<?php echo esc_html( $staff['full_name'] ) ?>
 															</label>
 														</a>

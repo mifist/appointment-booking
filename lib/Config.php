@@ -43,7 +43,7 @@ abstract class Config
     {
         $result = array(
             'locations'  => array(),
-            'ranks' => array(),
+            'ranks'      => array(),
             'categories' => array(),
             'services'   => array(),
             'staff'      => array(),
@@ -61,14 +61,21 @@ abstract class Config
 	    
 	    // Categories.
 	    $rows = Entities\Category::query()->fetchArray();
-	    foreach ( $rows as $row ) {
-		    $result['categories'][ $row['id'] ] = array(
-			    'id'   => (int) $row['id'],
-			    'name' => Utils\Common::getTranslatedString( 'category_' . $row['id'], $row['name'] ),
-			    'rank_id' => (int) $row['rank_id'],
-			    'pos'  => (int) $row['position'],
-		    );
-	    }
+			    foreach ( $rows as $row ) {
+				    $result['categories'][ $row['id'] ] = array(
+					    'id'   => (int) $row['id'],
+					    'name' => Utils\Common::getTranslatedString( 'category_' . $row['id'], $row['name'] ),
+					    'rank_id' => (int) $row['rank_id'],
+					    'pos'  => (int) $row['position'],
+				    );
+				    if ( ! $row['rank_id'] && ! isset ( $result['ranks'][0] ) ) {
+					    $result['ranks'][0] = array(
+						    'id'   => 0,
+						    'name' => __( 'Uranks', 'bookly' ),
+						    'pos'  => 99999,
+					    );
+				    }
+			    }
 	
 	    // Services.
 	    $rows = Entities\Service::query( 's' )
@@ -81,7 +88,6 @@ abstract class Config
 			    foreach ( $rows as $row ) {
 				    $result['services'][ $row['id'] ] = array(
 					    'id'          => (int) $row['id'],
-					    'rank_id' => (int) $row['rank_id'],
 					    'category_id' => (int) $row['category_id'],
 					    'name'        => $row['title'] == ''
 						    ? __( 'Untitled', 'bookly' )
@@ -92,13 +98,7 @@ abstract class Config
 					    'has_extras'   => (int) ( \Bookly\Lib\Proxy\ServiceExtras::findByServiceId( $row['id'] ) ),
 					    'pos'          => (int) $row['position'],
 				    );
-				    if ( ! $row['rank_id'] && ! isset ( $result['ranks'][0] ) ) {
-					    $result['ranks'][0] = array(
-						    'id'   => 0,
-						    'name' => __( 'Uranks', 'bookly' ),
-						    'pos'  => 99999,
-					    );
-				    }
+				  
 				    if ( ! $row['category_id'] && ! isset ( $result['categories'][0] ) ) {
 					    $result['categories'][0] = array(
 						    'id'   => 0,

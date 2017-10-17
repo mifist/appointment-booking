@@ -11,26 +11,34 @@
 	        <div class="bookly-form-group">
 		        <label><?php echo \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_rank' ) ?></label>
 		        <div>
-			        <select class="bookly-select-mobile bookly-js-select-category">
-				        <option value=""><?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_option_rank' ) ) ?></option>
+			       <select class="bookly-select-mobile bookly-js-select-rank">
+				        <option value="">
+					        <?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_option_rank' ) ) ?>
+				        </option>
 			        </select>
-		        </div>
+                </div>
 	        </div>
-	        
 	        
             <div class="bookly-form-group">
                 <label><?php echo \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_category' ) ?></label>
                 <div>
-                    <select class="bookly-select-mobile bookly-js-select-category">
-                        <option value=""><?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_option_category' ) ) ?></option>
+                    <select class="bookly-select-mobile bookly-js-select-category" disabled="disabled">
+                        <option value="">
+	                        <?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_option_category' ) ) ?>
+                        </option>
                     </select>
                 </div>
+	            <div class="bookly-js-select-category-error bookly-label-error" style="display: none">
+		            <?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_required_category' ) ) ?>
+	            </div>
             </div>
             <div class="bookly-form-group">
                 <label><?php echo \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_service' ) ?></label>
                 <div>
-                    <select class="bookly-select-mobile bookly-js-select-service">
-                        <option value=""><?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_option_service' ) ) ?></option>
+                    <select class="bookly-select-mobile bookly-js-select-service" disabled="disabled">
+                        <option value="">
+	                        <?php echo esc_html( \Bookly\Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_option_service' ) ) ?>
+                        </option>
                     </select>
                 </div>
                 <div class="bookly-js-select-service-error bookly-label-error" style="display: none">

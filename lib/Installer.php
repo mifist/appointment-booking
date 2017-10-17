@@ -332,6 +332,7 @@ class Installer extends Base\Installer
             'bookly_l10n_required_employee'              => __( 'Please select an employee', 'bookly' ),
             'bookly_l10n_required_name'                  => __( 'Please tell us your name', 'bookly' ),
             'bookly_l10n_required_phone'                 => __( 'Please tell us your phone', 'bookly' ),
+            'bookly_l10n_required_category'               => __( 'Please select a category', 'bookly' ),
             'bookly_l10n_required_service'               => __( 'Please select a service', 'bookly' ),
             'bookly_l10n_step_service'                   => __( 'Service', 'bookly' ),
             'bookly_l10n_step_time'                      => __( 'Time', 'bookly' ),
@@ -581,8 +582,8 @@ class Installer extends Base\Installer
 	    $wpdb->query(
             'CREATE TABLE IF NOT EXISTS `' . Entities\Service::getTableName() . '` (
                 `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-               `category_id`   INT UNSIGNED DEFAULT NULL,
-               `rank_id`   INT UNSIGNED DEFAULT NULL,
+                `category_id`   INT UNSIGNED DEFAULT NULL,
+                `rank_id`       INT UNSIGNED DEFAULT NULL,
                 `title`         VARCHAR(255) DEFAULT "",
                 `duration`      INT NOT NULL DEFAULT 900,
                 `price`         DECIMAL(10,2) NOT NULL DEFAULT 0.00,

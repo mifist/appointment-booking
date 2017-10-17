@@ -44,7 +44,8 @@ use Bookly\Lib\Base;
  * @method static void   enqueueAssetsForStaffProfile() Enqueue assets for page Staff
  * @method static void   enqueueBookingAssets() Enqueue assets for booking form
  * @method static void   printBookingAssets() Print assets for booking form.
- * @method static void   renderAfterServiceList( array $service_collection ) Render content after services forms
+ * @method static void   renderAfterServiceList( array $service_collection ) Render content after
+ * services forms
  * @method static void   renderAfterCategoryList( array $category_collection ) Render content after services forms
  * @method static void   renderAppearanceStepServiceSettings() Render checkbox settings
  * @method static void   renderAppointmentDialogCustomerList() Render content in AppointmentForm for customers

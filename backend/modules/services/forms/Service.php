@@ -60,11 +60,6 @@ class Service extends Lib\Base\Form
             $this->data['color'] = sprintf( '#%06X', mt_rand( 0, 0x64FFFF ) );
         }
 
-        if ( $this->data['type'] == Lib\Entities\Service::TYPE_SIMPLE || ! array_key_exists( 'sub_services', $this->data ) || empty( $this->data['sub_services'] ) ) {
-            $this->data['sub_services'] = '[]';
-        } elseif ( is_array( $this->data['sub_services'] ) ) {
-            $this->data['sub_services'] = json_encode( (array) $this->data['sub_services'] );
-        }
 
         return parent::save();
     }

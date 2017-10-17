@@ -8,8 +8,9 @@ namespace Bookly\Lib;
 class ChainItem
 {
     private $data = array(
+        'rank_id'           => null,
+        'category_id'       => null,
         'service_id'        => null,
-        'rank_id'        => null,
         'staff_ids'         => array(),
         'number_of_persons' => null,
         'quantity'          => null,
@@ -22,11 +23,6 @@ class ChainItem
      * @var Entities\Service[]
      */
     private $sub_services = null;
-    
-	/**
-	 * @var Entities\Category[]
-	 */
-	private $sub_categories = null;
     
 
     /**
@@ -93,7 +89,7 @@ class ChainItem
     }
 	
 	/**
-	 * Get service.
+	 * Get category.
 	 *
 	 * @return Entities\Category
 	 */
@@ -101,7 +97,18 @@ class ChainItem
 	{
 		return Entities\Category::find( $this->data['category_id'] );
 	}
-
+	
+	
+	/**
+	 * Get rank.
+	 *
+	 * @return Entities\Rank
+	 */
+	public function getRank()
+	{
+		return Entities\Rank::find( $this->data['rank_id'] );
+	}
+	
     /**
      * Get sub services.
      *
@@ -121,24 +128,6 @@ class ChainItem
         return $this->sub_services;
     }
 	
-	/**
-	 * Get sub services.
-	 *
-	 * @return Entities\Category[]
-	 */
-	public function getSubCategories()
-	{
-		if ( $this->sub_categories === null ) {
-			$category = $this->getCategory();
-			if ( $category->get( 'type' ) == Entities\Category::TYPE_COMPOUND ) {
-				$this->sub_categories = $category->getSubCategories();
-			} else {
-				$this->sub_categories = array( $category );
-			}
-		}
-		
-		return $this->sub_categories;
-	}
 	
 	
 	/**
@@ -166,30 +155,6 @@ class ChainItem
         return $staff_ids;
     }
 	
-	/**
-	 * Get staff ids for sub service.
-	 *
-	 * @param Entities\Service $sub_service
-	 * @return array
-	 */
-	public function getStaffIdsForSubCategory( Entities\Category $sub_category )
-	{
-		$staff_ids = array();
-		$sub_categories = $this->getSubCategories();
-		if ( $sub_category->get( 'id' ) == $sub_categories[0]->get( 'id' ) ) {
-			$staff_ids = $this->get( 'staff_ids' );
-		} else {
-			$res = Entities\StaffService::query()
-			                            ->select( 'staff_id' )
-			                            ->where( 'service_id', $sub_category->get( 'id' ) )
-			                            ->fetchArray();
-			foreach ( $res as $item ) {
-				$staff_ids[] = $item['staff_id'];
-			}
-		}
-		
-		return $staff_ids;
-	}
 
     /**
      * Check if exist payable extras.

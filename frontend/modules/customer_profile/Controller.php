@@ -62,6 +62,7 @@ class Controller extends Lib\Base\Controller
         $titles = array();
         if ( @$attributes['show_column_titles'] ) {
             $titles = array(
+                'rank'     => Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_rank' ),
                 'category' => Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_category' ),
                 'service'  => Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_service' ),
                 'staff'    => Lib\Utils\Common::getTranslatedOption( 'bookly_l10n_label_employee' ),
@@ -92,9 +93,12 @@ class Controller extends Lib\Base\Controller
     private function _translateAppointments( array $appointments )
     {
         foreach ( $appointments as &$appointment ) {
+            $rank = new Lib\Entities\Rank( array( 'id' => $appointment['rank_id'], 'name' => $appointment['rank'] ) );
             $category = new Lib\Entities\Category( array( 'id' => $appointment['category_id'], 'name' => $appointment['category'] ) );
+            
             $service  = new Lib\Entities\Service( array( 'id' => $appointment['service_id'],  'title' => $appointment['service'] ) );
             $staff    = new Lib\Entities\Staff( array( 'id' => $appointment['staff_id'],  'full_name' => $appointment['staff'] ) );
+            $appointment['rank']     = $rank->getName();
             $appointment['category'] = $category->getName();
             $appointment['service']  = $service->getTitle();
             $appointment['staff']    = $staff->getName();

@@ -376,6 +376,7 @@ abstract class NotificationSender
         $codes->set( 'appointment_end',     $event_end );
         $codes->set( 'appointment_start',   $event_start );
         $codes->set( 'cart_info',           $cart_info );
+        $codes->set( 'rank_name',           'Main Category Name' );
         $codes->set( 'category_name',       'Category Name' );
         $codes->set( 'client_email',        'client@example.com' );
         $codes->set( 'client_name',         'Client Name' );
@@ -502,6 +503,7 @@ abstract class NotificationSender
         $codes->set( 'appointment_token',   $ca->get( 'token' ) );
         $codes->set( 'booking_number' ,     $appointment->get( 'id' ) );
         $codes->set( 'category_name',       $service->getCategoryName( $locale ) );
+        $codes->set( 'rank_name',           $service->getRankName( $locale ) );
         $codes->set( 'client_email',        $customer->get( 'email' ) );
         $codes->set( 'client_name',         $customer->get( 'name' ) );
         $codes->set( 'client_phone',        $customer->get( 'phone' ) );

@@ -4,7 +4,7 @@ namespace Bookly\Backend\Modules\Services\Forms;
 use Bookly\Lib;
 
 /**
- * Class Category
+ * Class Rank
  * @package Bookly\Backend\Modules\Services\Forms
  */
 class Rank extends Lib\Base\Form

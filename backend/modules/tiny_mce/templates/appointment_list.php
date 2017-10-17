@@ -12,8 +12,13 @@
                     <label><input type="checkbox" id="bookly-show-column-titles" /><?php _e( 'Yes', 'bookly' ) ?></label>
                 </td>
             </tr>
+	        <tr>
+		        <th class="bookly-title-col"><?php _e( 'Columns', 'bookly' ) ?></th>
+		        <td>
+			        <label><input type="checkbox" data-column="rank" /><?php _e( 'Main Category', 'bookly' ) ?></label>
+		        </td>
+	        </tr>
             <tr>
-                <th class="bookly-title-col"><?php _e( 'Columns', 'bookly' ) ?></th>
                 <td>
                     <label><input type="checkbox" data-column="category" /><?php _e( 'Category', 'bookly' ) ?></label>
                 </td>

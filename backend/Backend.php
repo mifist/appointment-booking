@@ -86,7 +86,6 @@ class Backend
                 $calendar       = __( 'Calendar',      'bookly' );
                 $appointments   = __( 'Appointments',  'bookly' );
                 $staff_members  = __( 'Staff Members', 'bookly' );
-                $categories       = __( 'Categories',      'bookly' );
                 $services       = __( 'Services',      'bookly' );
                 $sms            = __( 'SMS Notifications', 'bookly' );
                 $notifications  = __( 'Email Notifications', 'bookly' );
@@ -113,8 +112,6 @@ class Backend
                 }
                 add_submenu_page( 'bookly-menu', $services, $services, 'manage_options',
                     Modules\Services\Controller::page_slug, array( $this->serviceController, 'index' ) );
-	            add_submenu_page( 'bookly-menu', $categories, $categories, 'manage_options',
-		            Modules\Services\Controller::page_slug2, array( $this->serviceController, 'categories' ) );
                 add_submenu_page( 'bookly-menu', $customers, $customers, 'manage_options',
                     Modules\Customers\Controller::page_slug, array( $this->customerController, 'index' ) );
                 add_submenu_page( 'bookly-menu', $notifications, $notifications, 'manage_options',

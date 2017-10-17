@@ -102,7 +102,7 @@ class Controller extends Lib\Base\Controller
         $attrs = array(
             'location_id'            => (int) ( @$_GET['loc_id']     ?: @$attributes['location_id'] ),
             'category_id'            => (int) ( @$_GET['cat_id']     ?: @$attributes['category_id'] ),
-            'rank_id'            => (int) ( @$_GET['rank_id']     ?: @$attributes['rank_id'] ),
+            'rank_id'                => (int) ( @$_GET['rank_id']     ?: @$attributes['rank_id'] ),
             'service_id'             => (int) ( @$_GET['service_id'] ?: @$attributes['service_id'] ),
             'staff_member_id'        => $staff_member_id,
             'hide_categories'        => in_array( 'categories',      $fields_to_hide ) ? true : (bool) @$attributes['hide_categories'],
@@ -119,7 +119,7 @@ class Controller extends Lib\Base\Controller
             'hide_locations'         => true,
             'hide_quantity'          => true,
         );
-	    error_log(print_r($attrs, TRUE));
+	   
 	    // Set service step attributes for Add-ons.
         if ( Lib\Config::locationsEnabled() ) {
             $attrs['hide_locations'] = in_array( 'locations', $fields_to_hide );
@@ -260,7 +260,7 @@ class Controller extends Lib\Base\Controller
                     'days_checked'     => $days_checked,
                     'show_cart_btn'    => $this->_showCartButton( $userData )
                 ), false ),
-                'ranks'       => $casest['ranks'],
+                'ranks'      => $casest['ranks'],
                 'categories' => $casest['categories'],
                 'chain'      => $userData->chain->getItemsData(),
                 'date_max'   => $bounding['date_max'],
@@ -1396,8 +1396,8 @@ class Controller extends Lib\Base\Controller
                 // No replacements.
             } elseif ( $step < 5 ) {
                 $data = array(
+	                'rank_names'          => array(),
                     'category_names'      => array(),
-                    'rank_names'      => array(),
                     'numbers_of_persons'  => array(),
                     'service_date'        => '',
                     'service_info'        => array(),
@@ -1417,6 +1417,7 @@ class Controller extends Lib\Base\Controller
                     $service = Lib\Entities\Service::find( $chain_item->get( 'service_id' ) );
                     $data['service_names'][]  = $service->getTitle();
                     $data['service_info'][]   = $service->getInfo();
+	                $data['rank_names'][] = $service->getRankName();
                     $data['category_names'][] = $service->getCategoryName();
                     /** @var Lib\Entities\Staff $staff */
                     $staff     = null;
@@ -1462,6 +1463,7 @@ class Controller extends Lib\Base\Controller
                 $this->info_text_codes = array(
                     '{amount_due}'        => '<b>' . Lib\Utils\Price::format( $data['total_price'] - $data['total_deposit_price'] ) . '</b>',
                     '{amount_to_pay}'     => '<b>' . Lib\Utils\Price::format( $data['total_deposit_price'] ) . '</b>',
+                    '{rank_name}'         => '<b>' . implode( ', ', $data['rank_names'] ) . '</b>',
                     '{category_name}'     => '<b>' . implode( ', ', $data['category_names'] ) . '</b>',
                     '{number_of_persons}' => '<b>' . implode( ', ', $data['numbers_of_persons'] ) . '</b>',
                     '{service_date}'      => '<b>' . $data['service_date'] . '</b>',
@@ -1477,6 +1479,7 @@ class Controller extends Lib\Base\Controller
             } else {
                 $data = array(
                     'booking_number'    => $userData->getBookingNumbers(),
+                    'rank_name'         => array(),
                     'category_name'     => array(),
                     'extras'            => array(),
                     'number_of_persons' => array(),
@@ -1494,7 +1497,8 @@ class Controller extends Lib\Base\Controller
                     $service = $cart_item->getService();
                     $slot    = $cart_item->get( 'slots' );
                     $service_dp = Lib\Slots\DatePoint::fromStr( $slot[0][2] )->toClientTz();
-
+                    
+	                $data['rank_name'][]         = $service->getRankName();
                     $data['category_name'][]     = $service->getCategoryName();
                     $data['number_of_persons'][] = $cart_item->get( 'number_of_persons' );
                     $data['service_date'][]  = $service_dp->formatI18nDate();
@@ -1515,6 +1519,7 @@ class Controller extends Lib\Base\Controller
                     '{amount_to_pay}'      => '<b>' . Lib\Utils\Price::format( $deposit ) . '</b>',
                     '{appointments_count}' => '<b>' . count( $userData->cart->getItems() ) . '</b>',
                     '{booking_number}'     => '<b>' . implode( ', ', $data['booking_number'] ) . '</b>',
+                    '{rank_name}'          => '<b>' . implode( ', ', $data['rank_name'] ) . '</b>',
                     '{category_name}'      => '<b>' . implode( ', ', $data['category_name'] ) . '</b>',
                     '{number_of_persons}'  => '<b>' . implode( ', ', $data['number_of_persons'] ) . '</b>',
                     '{service_date}'       => '<b>' . implode( ', ', $data['service_date'] ) . '</b>',

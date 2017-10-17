@@ -3,6 +3,22 @@
     <form id="bookly-shortcode-form">
         <table>
             <?php \Bookly\Lib\Proxy\Shared::renderPopUpShortCodeBooklyFormHead() ?>
+	        <tr>
+		        <td>
+			        <label for="bookly-select-rank"><?php _e( 'Default value for main category select', 'bookly' ) ?></label>
+		        </td>
+		        <td>
+			        <select id="bookly-select-rank">
+				        <option value=""><?php _e( 'Select main category', 'bookly' ) ?></option>
+			        </select>
+			        <div>
+				        <label>
+					        <input type="checkbox" id="bookly-hide-ranks" />
+					        <?php _e( 'Hide this field', 'bookly' ) ?>
+				        </label>
+			        </div>
+		        </td>
+	        </tr>
             <tr>
                 <td>
                     <label for="bookly-select-category"><?php _e( 'Default value for category select', 'bookly' ) ?></label>
@@ -11,7 +27,12 @@
                     <select id="bookly-select-category">
                         <option value=""><?php _e( 'Select category', 'bookly' ) ?></option>
                     </select>
-                    <div><label><input type="checkbox" id="bookly-hide-categories" /><?php _e( 'Hide this field', 'bookly' ) ?></label></div>
+                    <div>
+	                    <label>
+		                    <input type="checkbox" id="bookly-hide-categories" />
+		                    <?php _e( 'Hide this field', 'bookly' ) ?>
+	                    </label>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -97,11 +118,13 @@
 <script type="text/javascript">
     jQuery(function ($) {
         var $select_location        = $('#bookly-select-location'),
+            $select_rank            = $('#bookly-select-rank'),
             $select_category        = $('#bookly-select-category'),
             $select_service         = $('#bookly-select-service'),
             $select_employee        = $('#bookly-select-employee'),
             $hide_locations         = $('#bookly-hide-locations'),
             $hide_categories        = $('#bookly-hide-categories'),
+            $hide_ranks             = $('#bookly-hide-ranks'),
             $hide_services          = $('#bookly-hide-services'),
             $hide_staff             = $('#bookly-hide-employee'),
             $hide_number_of_persons = $('#bookly-hide-number-of-persons'),
@@ -112,6 +135,7 @@
             $add_button             = $('#add-bookly-form'),
             $insert                 = $('#bookly-insert-shortcode'),
             locations               = <?php echo json_encode( $casest['locations'] ) ?>,
+            ranks                   = <?php echo json_encode( $casest['ranks'] ) ?>,
             categories              = <?php echo json_encode( $casest['categories'] ) ?>,
             services                = <?php echo json_encode( $casest['services'] ) ?>,
             staff                   = <?php echo json_encode( $casest['staff'] ) ?>
@@ -159,8 +183,8 @@
             $select.val(value);
         }
 
-        function setSelects(location_id, category_id, service_id, staff_id) {
-            var _staff = {}, _services = {}, _categories = {}, _nop = {};
+        function setSelects(location_id, category_id, rank_id, service_id, staff_id) {
+            var _staff = {}, _services = {}, _ranks = {}, _categories = {}, _nop = {};
             $.each(staff, function(id, staff_member) {
                 if (location_id == '' || locations[location_id].staff.hasOwnProperty(id)) {
                     if (service_id == '') {
@@ -216,6 +240,7 @@
                     }
                 });
             }
+            setSelect($select_rank, _ranks, rank_id);
             setSelect($select_category, _categories, category_id);
             setSelect($select_service, _services, service_id);
             setSelect($select_employee, _staff, staff_id);

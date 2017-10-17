@@ -26,11 +26,15 @@ global $wp_locale;
                 <?php endif ?>
 	            
                 <div class="bookly-form-group">
-                    <?php $editable::renderLabel( array( 'bookly_l10n_label_rank', 'bookly_l10n_option_rank', ) ) ?>
+                    <?php $editable::renderLabel( array(
+                    		'bookly_l10n_label_rank',
+	                        'bookly_l10n_option_rank',
+	                    ) ) ?>
                     <div>
                         <select class="bookly-select-mobile bookly-js-select-rank">
-                            <option value="" class="bookly-js-option bookly_l10n_option_rank"><?php echo esc_html(
-                            		get_option( 'bookly_l10n_option_rank' ) ) ?></option>
+                            <option value="" class="bookly-js-option bookly_l10n_option_rank">
+	                            <?php echo esc_html( get_option( 'bookly_l10n_option_rank' ) ) ?>
+                            </option>
                             <option value="1">Main Cosmetic Dentistry</option>
                             <option value="2">Main Invisalign</option>
                             <option value="3">Main Orthodontics</option>
@@ -40,7 +44,11 @@ global $wp_locale;
                 </div>
 	            
 	            <div class="bookly-form-group">
-		            <?php $editable::renderLabel( array( 'bookly_l10n_label_category', 'bookly_l10n_option_category', ) ) ?>
+		            <?php $editable::renderLabel( array(
+		            		'bookly_l10n_label_category',
+			                'bookly_l10n_option_category',
+			                'bookly_l10n_required_category',
+			            ) ) ?>
 		            <div>
 			            <select class="bookly-select-mobile bookly-js-select-category">
 				            <option value="" class="bookly-js-option bookly_l10n_option_category"><?php echo esc_html( get_option( 'bookly_l10n_option_category' ) ) ?></option>

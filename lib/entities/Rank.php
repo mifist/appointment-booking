@@ -23,6 +23,26 @@ class Rank extends Lib\Base\Entity
      * @var Category[]
      */
     private $categories;
+	
+	/**
+	 * @var Service[]
+	 */
+	private $services;
+	
+	/**
+	 * Get translated title (if empty returns "Untitled").
+	 *
+	 * @param string $locale
+	 * @return string
+	 */
+	public function getTitle( $locale = null )
+	{
+		return Lib\Utils\Common::getTranslatedString(
+			'rank_' . $this->get( 'id' ),
+			$this->get( 'name' ) != '' ? $this->get( 'name' ) : __( 'Untitled', 'bookly' ),
+			$locale
+		);
+	}
 
     /**
      * @param Category $category
@@ -31,8 +51,24 @@ class Rank extends Lib\Base\Entity
     {
         $this->categories[] = $category;
     }
-
-    /**
+	
+	/**
+	 * @param Service $service
+	 */
+	public function addService( Service $service )
+	{
+		$this->services[] = $service;
+	}
+	
+	/**
+	 * @return Service[]
+	 */
+	public function getServices()
+	{
+		return $this->services;
+	}
+	
+	/**
      * @return Category[]
      */
     public function getCategories()
@@ -54,5 +90,17 @@ class Rank extends Lib\Base\Entity
         }
         return $return;
     }
+    
+	/**
+	 * Delete rank
+	 *
+	 * @return bool|int
+	 */
+	public function delete()
+	{
+		Lib\Proxy\Shared::categoryDeleted( $this->get( 'id' ) );
+		
+		return parent::delete();
+	}
 
 }

@@ -10,9 +10,6 @@ use Bookly\Lib;
 class Category extends Lib\Base\Entity
 {
 	
-	const TYPE_SIMPLE   = 'simple';
-	const TYPE_COMPOUND = 'compound';
-	
     protected static $table = 'ab_categories';
 
     protected static $schema = array(
@@ -59,7 +56,7 @@ class Category extends Lib\Base\Entity
     }
 	
 	/**
-	 * @param Service $service
+	 * @param Rank $rank
 	 */
 	public function addRanks( Rank $rank )
 	{
@@ -75,11 +72,12 @@ class Category extends Lib\Base\Entity
 	public function getRankName( $locale = null )
 	{
 		if ( $this->get( 'rank_id' ) ) {
-			return Category::find( $this->get( 'rank_id' ) )->getName( $locale );
+			return Rank::find( $this->get( 'rank_id' ) )->getName( $locale );
 		}
 		
 		return __( 'Unranks', 'bookly' );
 	}
+	
 	/**
 	 * @return Rank[]
 	 */
@@ -102,27 +100,7 @@ class Category extends Lib\Base\Entity
         return Lib\Utils\Common::getTranslatedString( 'category_' . $this->get( 'id' ), $this->get( 'name' ), $locale );
     }
 	
-	/**
-	 * Get sub services.
-	 *
-	 * @return Service[]
-	 */
-	public function getSubCategories()
-	{
-		$result = array();
-		$sub_category_ids = json_decode( $this->get( 'sub_category' ), true );
-		$categories = self::query()
-		                ->whereIn( 'id', $sub_category_ids )
-		                ->where( 'type', self::TYPE_SIMPLE )
-		                ->indexBy( 'id' )
-		                ->find();
-		// Order services like in sub_services array.
-		foreach ( $sub_category_ids as $category_id ) {
-			$result[] = $categories[ $category_id ];
-		}
-		
-		return $result;
-	}
+	
     
     public function save()
     {

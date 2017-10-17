@@ -17,7 +17,6 @@ class Service extends Lib\Base\Entity
     protected static $schema = array(
         'id'            => array( 'format' => '%d' ),
         'category_id'   => array( 'format' => '%d', 'reference' => array( 'entity' => 'Category' ) ),
-        'rank_id'   => array( 'format' => '%d', 'reference' => array( 'entity' => 'Rank' ) ),
         'title'         => array( 'format' => '%s' ),
         'duration'      => array( 'format' => '%d', 'default' => 900 ),
         'price'         => array( 'format' => '%f', 'default' => '0' ),
@@ -34,6 +33,8 @@ class Service extends Lib\Base\Entity
     );
 
     protected static $cache = array();
+	
+	
 
     /**
      * Get translated title (if empty returns "Untitled").
@@ -65,20 +66,6 @@ class Service extends Lib\Base\Entity
         return __( 'Uncategorized', 'bookly' );
     }
 	
-	/**
-	 * Get rank name.
-	 *
-	 * @param string $locale
-	 * @return string
-	 */
-	public function getRankName( $locale = null )
-	{
-		if ( $this->get( 'rank_id' ) ) {
-			return Category::find( $this->get( 'rank_id' ) )->getName( $locale );
-		}
-		
-		return __( 'Unranks', 'bookly' );
-	}
     
     /**
      * Get translated info.
