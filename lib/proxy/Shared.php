@@ -41,6 +41,7 @@ use Bookly\Lib\Base;
  * @method static void   serviceDeleted( int $service_id ) Service deleted
  * @method static void   categoryDeleted( int $category_id ) Category deleted
  * @method static void   enqueueAssetsForServices() Enqueue assets for page Services
+ * @method static void   enqueueAssetsForCategories() Enqueue assets for page Categories
  * @method static void   enqueueAssetsForStaffProfile() Enqueue assets for page Staff
  * @method static void   enqueueBookingAssets() Enqueue assets for booking form
  * @method static void   printBookingAssets() Print assets for booking form.

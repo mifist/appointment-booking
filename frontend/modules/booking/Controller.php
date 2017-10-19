@@ -130,8 +130,8 @@ class Controller extends Lib\Base\Controller
 
         $service_part1 = (
             ! $attrs['show_number_of_persons'] &&
-            $attrs['hide_categories'] &&
             $attrs['hide_ranks'] &&
+            $attrs['hide_categories'] &&
             $attrs['hide_services'] &&
             $attrs['service_id'] &&
             $attrs['hide_staff_members'] &&

@@ -240,7 +240,7 @@
                     }
                 });
             }
-            setSelect($select_rank, _ranks, rank_id);
+            setSelect($select_rank, _rankss, rank_id);
             setSelect($select_category, _categories, category_id);
             setSelect($select_service, _services, service_id);
             setSelect($select_employee, _staff, staff_id);

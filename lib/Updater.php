@@ -304,8 +304,8 @@ class Updater extends Base\Updater
             'bookly_l10n_required_employee' => __( 'Please select an employee', 'bookly' ),
             'bookly_l10n_required_name'     => __( 'Please tell us your name',  'bookly' ),
             'bookly_l10n_required_phone'    => __( 'Please tell us your phone', 'bookly' ),
-            'bookly_l10n_required_service'  => __( 'Please select a service',   'bookly' ),
             'bookly_l10n_required_category'  => __( 'Please select a category',   'bookly' ),
+            'bookly_l10n_required_service'  => __( 'Please select a service',   'bookly' ),
         );
         foreach ( $options as $option_name => $option_value ) {
             if ( get_option( $option_name ) == '' ) {
@@ -474,8 +474,8 @@ class Updater extends Base\Updater
             'ab_appearance_text_required_employee' => 'bookly_l10n_required_employee',
             'ab_appearance_text_required_name'     => 'bookly_l10n_required_name',
             'ab_appearance_text_required_phone'    => 'bookly_l10n_required_phone',
-            'ab_appearance_text_required_service'  => 'bookly_l10n_required_service',
             'ab_appearance_text_required_category'  => 'bookly_l10n_required_category',
+            'ab_appearance_text_required_service'  => 'bookly_l10n_required_service',
             'ab_appearance_text_step_cart'         => 'bookly_l10n_step_cart',
             'ab_appearance_text_step_details'      => 'bookly_l10n_step_details',
             'ab_appearance_text_step_done'         => 'bookly_l10n_step_done',

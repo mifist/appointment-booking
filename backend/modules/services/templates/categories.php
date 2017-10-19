@@ -3,7 +3,7 @@
     <div class="bookly-tbs-body">
         <div class="page-header text-right clearfix">
             <div class="bookly-page-title">
-                <?php _e( 'Services', 'bookly' ) ?>
+                <?php _e( 'Categories', 'bookly' ) ?>
             </div>
             <?php \Bookly\Backend\Modules\Support\Components::getInstance()->renderButtons( $this::page_slug ) ?>
         </div>
@@ -68,7 +68,7 @@
 	  
     </div>
 
-    <div id="bookly-update-service-settings" class="modal fade" tabindex=-1 role="dialog">
+    <div id="bookly-update-category-settings" class="modal fade" tabindex=-1 role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

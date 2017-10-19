@@ -78,19 +78,19 @@ jQuery(function($) {
             if ($(e.target).is('.bookly-js-handle')) return;
             $('#bookly-js-services-list').html('<div class="bookly-loading"></div>');
             var $clicked = $(this);
+
             $.get(ajaxurl, {
             	action:'bookly_get_category_services',
 	            category_id: $clicked.data('category-id'),
 	            csrf_token : BooklyL10n.csrf_token
-                
             },
 	            function(response) {
-                    if ( response.success ) {
-                        $('.bookly-category-item').not($clicked).removeClass('active');
-                        $clicked.addClass('active');
-                        $('.bookly-category-title').text($clicked.text());
-                        refreshList(response.data, 0);
-                    }
+                if ( response.success ) {
+                    $('.bookly-category-item').not($clicked).removeClass('active');
+                    $clicked.addClass('active');
+                    $('.bookly-category-title').text($clicked.text());
+                    refreshList(response.data, 0);
+                }
             });
         })
 
@@ -422,20 +422,4 @@ jQuery(function($) {
     
     makeServicesSortable();
     onCollapseInitChildren();
-});
-
-
-
-$("#country_code").change(function(){ // change function of listbox
-	
-	
-	$.post( "dropdown3ck.php", {"country_code":$('#country_code').val()},function(return_data,status){
-		$("#state_id").append("<option value=''>Select State</option>");
-		
-		$.each(return_data.state, function(key,value){
-			$("#state_id").append("<option value=" + value.state_id +">"+value.state_id + ':' + value.state+"</option>");
-		});
-		
-	},"json");
-
 });

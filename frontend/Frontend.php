@@ -78,9 +78,9 @@ class Frontend
         }
         
         
-        //call_user_func( $link_script, 'bookly',             $resources . '/js/bookly.js',            array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
+        call_user_func( $link_script, 'bookly',             $resources . '/js/bookly.js',            array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
 	
-	    call_user_func( $link_script, 'bookly',             $resources . '/js/bookly-main.js',            array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
+	    //call_user_func( $link_script, 'bookly',             $resources . '/js/bookly-main.js',           array( 'bookly-ladda', 'bookly-hammer', 'bookly-picker-date' ), $version );
         
         
         

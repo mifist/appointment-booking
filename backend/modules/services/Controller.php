@@ -33,8 +33,14 @@ class Controller extends Lib\Base\Controller
                 'js/range_tools.js' => array( 'jquery' ),
             ),
             'module'   => array(
-            	'js/service.js' => array( 'jquery-ui-sortable', 'jquery' ),
-			    'js/rank.js' => array( 'jquery-ui-sortable', 'jquery' ),
+	            'js/service.js' => array(
+		            'jquery-ui-sortable',
+		            'jquery'
+	            ),
+	            'js/rank.js' => array(
+		            'jquery-ui-sortable',
+		            'jquery'
+	            ),
             ),
             'frontend' => array(
                 'js/spin.min.js'  => array( 'jquery' ),
@@ -56,10 +62,60 @@ class Controller extends Lib\Base\Controller
         $category_collection = $this->getCategoryCollection();
         $rank_collection = $this->getRankCollection();
         $service_collection  = $this->getServiceCollection();
-        $this->render( 'index', compact( 'staff_collection', 'category_collection', 'rank_collection', 'service_collection' ) );
+        $this->render( 'index', compact( 'staff_collection', 'category_collection',  'rank_collection', 'service_collection' ) );
     }
 	
-    
+	/**
+	 * Categories page.
+	 */
+	public function categories()
+	{
+		wp_enqueue_media();
+		$this->enqueueStyles( array(
+			'wp'       => array( 'wp-color-picker' ),
+			'frontend' => array( 'css/ladda.min.css' ),
+			'backend'  => array( 'bootstrap/css/bootstrap-theme.min.css' ),
+		) );
+		
+		$this->enqueueScripts( array(
+			'wp'       => array( 'wp-color-picker' ),
+			'backend'  => array(
+				'bootstrap/js/bootstrap.min.js' => array( 'jquery' ),
+				'js/help.js'  => array( 'jquery' ),
+				'js/alert.js' => array( 'jquery' ),
+				'js/range_tools.js' => array( 'jquery' ),
+			),
+			'module'   => array(
+				'js/service.js' => array(
+					'jquery-ui-sortable',
+					'jquery'
+				),
+				'js/rank.js' => array(
+					'jquery-ui-sortable',
+					'jquery'
+				),
+			),
+			'frontend' => array(
+				'js/spin.min.js'  => array( 'jquery' ),
+				'js/ladda.min.js' => array( 'bookly-spin.min.js', 'jquery' ),
+			)
+		) );
+		
+		wp_localize_script( 'bookly-service.js', 'BooklyL10n', array(
+			'csrf_token'            => Lib\Utils\Common::getCsrfToken(),
+			'capacity_error'        => __( 'Min capacity should not be greater than max capacity.', 'bookly' ),
+			'are_you_sure'          => __( 'Are you sure?', 'bookly' ),
+			'service_special_day'   => Lib\Config::specialDaysEnabled() && Lib\Config::specialDaysEnabled()
+		) );
+		
+		// Allow add-ons to enqueue their assets.
+		Lib\Proxy\Shared::enqueueAssetsForCategories();
+		
+		$staff_collection    = $this->getStaffCollection();
+		$category_collection = $this->getCategoryCollection();
+		$rank_collection = $this->getRankCollection();
+		$this->render( 'categories', compact( 'staff_collection', 'category_collection', 'rank_collection') );
+	}
     /**
      *
      */

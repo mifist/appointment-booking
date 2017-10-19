@@ -74,21 +74,16 @@ jQuery(function($) {
         // On rank item click.
         .on('click', '.bookly-rank-item', function(e) {
             if ($(e.target).is('.bookly-js-handle')) return;
-            $('#bookly-js-rank-list').html('<div class="bookly-loading"></div>');
+            $('#bookly-js-category-list').html('<div class="bookly-loading"></div>');
             var $clicked = $(this);
-	        console.log('result main');
-            $.get(ajaxurl, {
-            	action:'bookly_get_category_ranks',
-	            rank_id: $clicked.data('rank-id'),
-	            csrf_token : BooklyL10n.csrf_token
-            },
-	            function(response) {
-	                if ( response.success ) {
-	                    $('.bookly-rank-item').not($clicked).removeClass('active');
-	                    $clicked.addClass('active');
-	                    $('.bookly-rank-title').text($clicked.text());
-	                    refreshList1(response.data, 0);
-	                }
+
+            $.get(ajaxurl, {action:'bookly_get_category_ranks', rank_id: $clicked.data('rank-id'), csrf_token : BooklyL10n.csrf_token}, function(response) {
+                if ( response.success ) {
+                    $('.bookly-rank-item').not($clicked).removeClass('active');
+                    $clicked.addClass('active');
+                    $('.bookly-rank-title').text($clicked.text());
+                    refreshList1(response.data, 0);
+                }
             });
         })
 
@@ -156,7 +151,7 @@ jQuery(function($) {
 			} else {
 				$container.find('.bookly-check-all-entities').prop('checked', $container.find('.bookly-js-check-entity:not(:checked)').length == 0);
 			}
-			updateSelectorButton1($container);
+			updateSelectorButton($container);
 		});
 	
 	// Modal window events.
@@ -181,10 +176,8 @@ jQuery(function($) {
 		$list.html(response);
 		if (response.indexOf('panel') >= 0) {
 			$no_result_category.hide();
-			makeCategoriesSortable();
 			onCollapseInitChildren1();
 			$list.booklyHelp();
-			
 		} else {
 			$no_result_category.show();
 		}
@@ -269,7 +262,7 @@ jQuery(function($) {
 			});
 		}
 	});
-	
+
 	
 	function onCollapseInitChildren1() {
 		$('.panel-collapse').on('show.bs.collapse.bookly', function () {
@@ -324,7 +317,7 @@ jQuery(function($) {
 			$(document.body).trigger( 'category.initForm', [ $panel, $panel.closest('.panel').data('category-id') ] );
 		});
 	}
-
+	
 	onCollapseInitChildren1();
 
     

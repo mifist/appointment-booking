@@ -2,10 +2,10 @@
 namespace Bookly\Lib\Slots;
 
 /**
- * Class Category
+ * Class Rank
  * @package Bookly\Lib\Slots
  */
-class Category
+class Rank
 {
 	/** @var string */
 	protected $title;
@@ -29,6 +29,4 @@ class Category
 	{
 		return $this->title;
 	}
-	
-	
 }

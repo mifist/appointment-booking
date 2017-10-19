@@ -49,7 +49,6 @@
 						
 						var $chain_item_draft = $('.bookly-js-chain-item.bookly-js-draft', $container),
 							$select_location  = $('.bookly-js-select-location', $container),
-							$select_rank      = $('.bookly-js-select-rank', $container),
 							$select_category  = $('.bookly-js-select-category', $container),
 							$select_service   = $('.bookly-js-select-service',  $container),
 							$select_employee  = $('.bookly-js-select-employee', $container),
@@ -63,16 +62,13 @@
 							$mobile_next_step = $('.bookly-js-mobile-next-step', $container),
 							$mobile_prev_step = $('.bookly-js-mobile-prev-step', $container),
 							locations         = response.locations,
-							ranks             = response.ranks,
 							categories        = response.categories,
 							services          = response.services,
 							staff             = response.staff,
 							chain             = response.chain,
 							last_chain_key    = 0,
-							rank_selected = false,
 							category_selected = false
-							
-							;
+						;
 						
 						// Init Pickadate.
 						$date_from.pickadate({
@@ -137,12 +133,12 @@
 							$select.val(value);
 						}
 						
-						function setSelects($chain_item, location_id, rank_id, category_id, service_id, staff_id) {
-							var _staff = {}, _services = {}, _ranks = {}, _categories = {}, _nop = {};
+						function setSelects($chain_item, location_id, category_id, service_id, staff_id) {
+							var _staff = {}, _services = {}, _categories = {}, _nop = {};
 							$.each(staff, function(id, staff_member) {
 								if (!location_id || locations[location_id].staff.hasOwnProperty(id)) {
 									if (!service_id) {
-										if (!category_id || !rank_id) {
+										if (!category_id) {
 											_staff[id] = staff_member;
 										} else {
 											$.each(staff_member.services, function(s_id) {
@@ -174,36 +170,18 @@
 										}
 									}
 								});
-								_ranks = ranks;
-								$.each(services, function(id, service) {
-									if (!rank_id || service.rank_id == rank_id) {
-										if (!staff_id || staff[staff_id].services.hasOwnProperty(id)) {
-											_services[id] = service;
-										}
-									}
-								});
 							} else {
 								var category_ids = [],
-									rank_ids  = [],
 									service_ids  = [];
 								$.each(locations[location_id].staff, function(st_id) {
 									$.each(staff[st_id].services, function(s_id) {
-										rank_ids.push(services[s_id].rank_id);
 										category_ids.push(services[s_id].category_id);
 										service_ids.push(s_id);
 									});
 								});
-								$.each(ranks, function(id, rank) {
-									if ($.inArray(parseInt(id), rank_ids) > -1) {
-										_ranks[id] = rank;
-									}
-								});
 								$.each(categories, function(id, category) {
 									if ($.inArray(parseInt(id), category_ids) > -1) {
-										
-										if (!rank_id || category.rank_id == rank_id) {
-											_categories[id] = category;
-										}
+										_categories[id] = category;
 									}
 								});
 								$.each(services, function(id, service) {
@@ -236,24 +214,22 @@
 							if (nop < min_capacity) {
 								nop = min_capacity;
 							}
-							setSelect($chain_item.find('.bookly-js-select-rank'), _ranks, rank_id);
 							setSelect($chain_item.find('.bookly-js-select-category'), _categories, category_id);
 							setSelect($chain_item.find('.bookly-js-select-service'), _services, service_id);
 							setSelect($chain_item.find('.bookly-js-select-employee'), _staff, staff_id);
 							setSelect($chain_item.find('.bookly-js-select-number-of-persons'), _nop, nop);
 						}
 						
-						
+						$container.off('click').off('change');
 						
 						// Location select change
 						$container.on('change', '.bookly-js-select-location', function () {
 							var $chain_item = $(this).closest('.bookly-js-chain-item'),
 								location_id = this.value,
-								rank_id     = $chain_item.find('.bookly-js-select-rank').val(),
 								category_id = $chain_item.find('.bookly-js-select-category').val(),
 								service_id  = $chain_item.find('.bookly-js-select-service').val(),
 								staff_id    = $chain_item.find('.bookly-js-select-employee').val()
-								;
+							;
 							
 							// Validate selected values.
 							if (location_id) {
@@ -289,88 +265,22 @@
 										category_id = '';
 									}
 								}
-								if (rank_id) {
-									var valid = false;
-									$.each(locations[location_id].staff, function(id) {
-										$.each(staff[id].services, function(s_id) {
-											if (services[s_id].rank_id == rank_id) {
-												valid = true;
-												return false;
-											}
-										});
-										if (valid) {
-											return false;
-										}
-									});
-									if (!valid) {
-										rank_id = '';
-									}
-								}
 							}
-							setSelects($chain_item, location_id, rank_id, category_id, service_id, staff_id);
+							setSelects($chain_item, location_id, category_id, service_id, staff_id);
 						});
-						
-						
-						// Rank select change
-						$container.on('change', '.bookly-js-select-rank', function () {
-							var $chain_item = $(this).closest('.bookly-js-chain-item'),
-								location_id = $chain_item.find('.bookly-js-select-location').val(),
-								rank_id     = this.value,
-								category_id  = $chain_item.find('.bookly-js-select-category').val(),
-								service_id  = $chain_item.find('.bookly-js-select-service').val(),
-								staff_id    = $chain_item.find('.bookly-js-select-employee').val()
-								;
-							// Validate selected values.
-							
-							if (rank_id) {
-								rank_selected = true;
-								
-								if (service_id) {
-									if (services[service_id].rank_id != rank_id) {
-										service_id = '';
-									}
-								}
-								if (staff_id) {
-									var valid = false;
-									$.each(staff[staff_id].services, function(id) {
-										if (services[id].rank_id == rank_id) {
-											valid = true;
-											return false;
-											
-										}
-									});
-									if (!valid) {
-										staff_id = '';
-									}
-								}
-							} else {
-								rank_selected = false;
-							}
-							setSelects($chain_item, location_id, rank_id, category_id, service_id, staff_id);
-							if (rank_id != '' ) {
-								$('.bookly-js-select-category').attr('disabled', false);
-							} else {
-								$('.bookly-js-select-category').attr('disabled', true);
-							}
-						});
-						
 						
 						// Category select change
 						$container.on('change', '.bookly-js-select-category', function () {
 							var $chain_item = $(this).closest('.bookly-js-chain-item'),
 								location_id = $chain_item.find('.bookly-js-select-location').val(),
 								category_id = this.value,
-								rank_id = rank_selected
-									? $chain_item.find('.bookly-js-select-rank').val()
-									: '',
 								service_id  = $chain_item.find('.bookly-js-select-service').val(),
 								staff_id    = $chain_item.find('.bookly-js-select-employee').val()
-								;
+							;
 							
 							// Validate selected values.
 							if (category_id) {
 								category_selected = true;
-								
 								if (service_id) {
 									if (services[service_id].category_id != category_id) {
 										service_id = '';
@@ -379,7 +289,7 @@
 								if (staff_id) {
 									var valid = false;
 									$.each(staff[staff_id].services, function(id) {
-										if ((services[id].category_id == category_id)) {
+										if (services[id].category_id == category_id) {
 											valid = true;
 											return false;
 										}
@@ -391,39 +301,28 @@
 							} else {
 								category_selected = false;
 							}
-							setSelects($chain_item, location_id, rank_id, category_id, staff_id);
-							
-							
-							if (category_id != '' && rank_id != '' ) {
-								$('.bookly-js-select-service').attr('disabled', false);
-							} else {
-								$('.bookly-js-select-service').attr('disabled', true);
-							}
+							setSelects($chain_item, location_id, category_id, service_id, staff_id);
 						});
 						
 						// Service select change
 						$container.on('change', '.bookly-js-select-service', function () {
 							var $chain_item = $(this).closest('.bookly-js-chain-item'),
 								location_id = $chain_item.find('.bookly-js-select-location').val(),
-								rank_id = rank_selected
-									? $chain_item.find('.bookly-js-select-rank').val()
-									: '',
 								category_id = category_selected
 									? $chain_item.find('.bookly-js-select-category').val()
 									: '',
 								service_id  = this.value,
 								staff_id    = $chain_item.find('.bookly-js-select-employee').val()
-								;
+							;
 							
 							// Validate selected values.
-							if (service_id ) {
+							if (service_id) {
 								if (staff_id && !staff[staff_id].services.hasOwnProperty(service_id)) {
 									staff_id = '';
 								}
 							}
-							setSelects($chain_item, location_id, rank_id, category_id, service_id, staff_id);
+							setSelects($chain_item, location_id, category_id, service_id, staff_id);
 							if (service_id) {
-								$chain_item.find('.bookly-js-select-rank').val(services[service_id].rank_id);
 								$chain_item.find('.bookly-js-select-category').val(services[service_id].category_id);
 							}
 						});
@@ -432,13 +331,12 @@
 						$container.on('change', '.bookly-js-select-employee', function() {
 							var $chain_item = $(this).closest('.bookly-js-chain-item'),
 								location_id = $chain_item.find('.bookly-js-select-location').val(),
-								rank_id = $('.bookly-js-select-rank', $chain_item).val(),
 								category_id = $('.bookly-js-select-category', $chain_item).val(),
 								service_id  = $chain_item.find('.bookly-js-select-service').val(),
 								staff_id    = this.value
-								;
+							;
 							
-							setSelects($chain_item, location_id, rank_id, category_id, service_id, staff_id);
+							setSelects($chain_item, location_id, category_id, service_id, staff_id);
 						});
 						
 						// Set up draft selects.
@@ -449,12 +347,10 @@
 						}
 						
 						setSelect($select_location, locations);
-						setSelect($select_rank, ranks);
 						setSelect($select_category, categories);
 						setSelect($select_service,  services);
 						setSelect($select_employee, staff);
 						$select_location.closest('.bookly-form-group').toggle(!Options.attributes.hide_locations);
-						$select_rank.closest('.bookly-form-group').toggle(!Options.attributes.hide_ranks);
 						$select_category.closest('.bookly-form-group').toggle(!Options.attributes.hide_categories);
 						$select_service.closest('.bookly-form-group').toggle(!(Options.attributes.hide_services && Options.attributes.service_id));
 						$select_employee.closest('.bookly-form-group').toggle(!Options.attributes.hide_staff_members);
@@ -462,10 +358,6 @@
 						$select_quantity.closest('.bookly-form-group').toggle(!Options.attributes.hide_quantity);
 						if (Options.attributes.location_id) {
 							$select_location.val(Options.attributes.location_id).trigger('change');
-						}
-						if (Options.attributes.rank_id) {
-							$select_rank.val(Options.attributes.rank_id).trigger('change');
-							
 						}
 						if (Options.attributes.category_id) {
 							$select_category.val(Options.attributes.category_id).trigger('change');
@@ -504,12 +396,6 @@
 							$('.bookly-js-chain-item:last', $container).after($chain_item);
 							if (chain_item.location_id) {
 								$('.bookly-js-select-location', $chain_item).val(chain_item.location_id).trigger('change');
-							}
-							if (chain_item.rank_id) {
-								$('.bookly-js-select-rank', $chain_item).val(chain_item.rank_id).trigger('change');
-							}
-							if (chain_item.category_id) {
-								$('.bookly-js-select-category', $chain_item).val(chain_item.category_id).trigger('change');
 							}
 							if (chain_item.service_id) {
 								$('.bookly-js-select-service', $chain_item).val(chain_item.service_id).trigger('change');
@@ -933,7 +819,7 @@
 						slots_per_column,
 						columns_per_screen,
 						show_day_per_column = response.day_one_column
-						;
+					;
 					// 'BACK' button.
 					$('.bookly-js-back-step', $container).on('click', function (e) {
 						e.preventDefault();
@@ -1357,7 +1243,7 @@
 								short_date_format = response.short_date_format,
 								bound_date = {min: response.date_min || true, max: response.date_max || true},
 								schedule = []
-								;
+							;
 							var repeat = {
 								prepareButtonNextState : function () {
 									// Disable/Enable next button
@@ -1871,7 +1757,7 @@
 												if (response.success) {
 													var remove_cart_key = $cart_item.data('cart-key'),
 														$trs_to_remove  = $('tr[data-cart-key="'+remove_cart_key+'"]', $container)
-														;
+													;
 													$cart_item.delay(300).fadeOut(200, function () {
 														$('.bookly-js-total-price', $container).html(response.data.total_price);
 														$('.bookly-js-total-deposit-price', $container).html(response.data.total_deposit_price);
@@ -1931,7 +1817,7 @@
 							$login_modal  = $('.bookly-js-login',            $container),
 							$cst_modal    = $('.bookly-js-cst-duplicate',    $container),
 							$next_btn     = $('.bookly-js-next-step',        $container)
-							;
+						;
 						if (Options.intlTelInput.enabled) {
 							$phone_field.intlTelInput({
 								preferredCountries: [Options.intlTelInput.country],
@@ -2014,7 +1900,7 @@
 								checkbox_values,
 								captcha_ids = [],
 								ladda = ladda_start(this)
-								;
+							;
 							$('.bookly-custom-fields-container', $container).each(function () {
 								var $cf_container = $(this),
 									key = $cf_container.data('cart_key'),
@@ -2241,7 +2127,7 @@
 							$coupon_info_text = $('.bookly-info-text-coupon', $container),
 							$bookly_payment_nav = $('.bookly-payment-nav', $container),
 							$buttons = $('.bookly-gateway-buttons,form.bookly-authorize-net,form.bookly-stripe', $container)
-							;
+						;
 						$payments.on('click', function() {
 							$buttons.hide();
 							$('.bookly-gateway-buttons.pay-' + $(this).val(), $container).show();
@@ -2311,7 +2197,7 @@
 						$('.bookly-js-next-step', $container).on('click', function (e) {
 							var ladda = ladda_start(this),
 								$form
-								;
+							;
 							if ($('.bookly-payment[value=local]', $container).is(':checked') || $(this).hasClass('bookly-js-coupon-payment')) {
 								// handle only if was selected local payment !
 								e.preventDefault();

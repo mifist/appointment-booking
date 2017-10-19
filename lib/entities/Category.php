@@ -100,7 +100,27 @@ class Category extends Lib\Base\Entity
         return Lib\Utils\Common::getTranslatedString( 'category_' . $this->get( 'id' ), $this->get( 'name' ), $locale );
     }
 	
-	
+	/**
+	 * Get sub services.
+	 *
+	 * @return Service[]
+	 */
+	public function getSubCategories()
+	{
+		$result = array();
+		$sub_category_ids = json_decode( $this->get( 'sub_category' ), true );
+		$categories = self::query()
+		                ->whereIn( 'id', $sub_category_ids )
+		                ->where( 'type', self::TYPE_SIMPLE )
+		                ->indexBy( 'id' )
+		                ->find();
+		// Order services like in sub_services array.
+		foreach ( $sub_category_ids as $category_id ) {
+			$result[] = $categories[ $category_id ];
+		}
+		
+		return $result;
+	}
     
     public function save()
     {

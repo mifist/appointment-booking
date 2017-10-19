@@ -14,7 +14,9 @@
 .bookly-btn[disabled] {
     opacity: 0.5;
 }
-
+.featured-box .box-content {
+    padding: 30px 30px 10px 30px !important;
+}
 /* Layout */
 .bookly-box {
     margin: 0 0 20px;
