@@ -92,13 +92,13 @@ abstract class Config
 					    'has_extras'   => (int) ( \Bookly\Lib\Proxy\ServiceExtras::findByServiceId( $row['id'] ) ),
 					    'pos'          => (int) $row['position'],
 				    );
-				    if ( ! $row['rank_id'] && ! isset ( $result['ranks'][0] ) ) {
+				   /* if ( ! $row['rank_id'] && ! isset ( $result['ranks'][0] ) ) {
 					    $result['ranks'][0] = array(
 						    'id'   => 0,
-						    'name' => __( 'Uranks', 'bookly' ),
+						    'name' => __( 'Unranks', 'bookly' ),
 						    'pos'  => 99999,
 					    );
-				    }
+				    }*/
 				    if ( ! $row['category_id'] && ! isset ( $result['categories'][0] ) ) {
 					    $result['categories'][0] = array(
 						    'id'   => 0,
